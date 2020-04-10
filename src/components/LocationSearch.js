@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TextField, InputAdornment } from "@material-ui/core";
-import { GpsFixed } from "@material-ui/icons";
-import { LocationStore, loadingState } from "../locationStore";
+import { GpsFixed, Search } from "@material-ui/icons";
+import { LocationStore, loadingState } from "../stores/locationStore";
 
 export default ({ onChanged }) => {
     const [geoLocationIsAvailable, setGeoLocationIsAvailable] = useState(
@@ -29,6 +29,7 @@ export default ({ onChanged }) => {
     }, [onChanged]);
 
     const updateGeoLocation = () => {
+        return;
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 ({ coords: { latitude, longitude } }) =>
@@ -41,21 +42,29 @@ export default ({ onChanged }) => {
         }
     };
 
-    useEffect(updateGeoLocation, [onChanged]);
+    // useEffect(updateGeoLocation, [onChanged]);
 
     return (
         <LocationStore.Consumer>
             {(locationState) => (
                 <TextField
                     id='location-autocomplete'
-                    label='Location'
-                    placeholder='City/State/Zip'
+                    // label='Search for location'
+                    placeholder='Search for location'
                     variant='outlined'
-                    disabled={locationState.loadingState === loadingState.LOADING}
+                    fullWidth
+                    disabled={
+                        locationState.loadState === loadingState.LOADING
+                    }
                     InputProps={{
+                        startAdornment: (
+                            <InputAdornment>
+                                <Search />
+                            </InputAdornment>
+                        ),
                         endAdornment: geoLocationIsAvailable && (
                             <InputAdornment position='end'>
-                                <GpsFixed onClick={updateGeoLocation} />}
+                                <GpsFixed onClick={updateGeoLocation} />
                             </InputAdornment>
                         ),
                     }}

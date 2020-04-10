@@ -1,39 +1,15 @@
-import React, { useEffect, useContext, useState } from "react";
-import { LocationStore } from "../locationStore";
-import { fetchRelation, fetchStationObservations } from "../weatherApi";
+import React from "react";
 
-export default () => {
-    const [temperature, setTemperature] = useState("--°");
-    const locationState = useContext(LocationStore);
+export default ({ temperature, description }) => {
+    let formattedTemperature =
+        temperature != null
+            ? `${(temperature * (9 / 5) + 32).toFixed()}°`
+            : null;
 
-    useEffect(() => {
-        const asyncEffect = async () => {
-            if (
-                locationState?.weatherGrid?.properties?.observationStations ==
-                null
-            ) {
-                return;
-            }
-            const stationsResponse = await fetchRelation(
-                locationState?.weatherGrid?.properties?.observationStations
-            );
-            const stationsData = await stationsResponse.json();
-            for (const stationUrl of stationsData.observationStations) {
-                const observationsResponse = await fetchStationObservations(
-                    stationUrl
-                );
-                const stationObservations = await observationsResponse.json();
-                if (stationObservations?.properties?.temperature?.value == null) {
-                    continue;
-                }
-                setTemperature(
-                    `${stationObservations.properties.temperature.value.toFixed()}°`
-                );
-                break;
-            }
-        };
-        asyncEffect();
-    }, [locationState?.weatherGrid?.properties?.observationStations]);
-
-    return <h2>{temperature}</h2>;
+    return (
+        <>
+            <h1>{formattedTemperature || "--°"}</h1>
+            <h2>{description}</h2>
+        </>
+    );
 };

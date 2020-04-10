@@ -10,10 +10,18 @@ export const fetchGridPoints = async (latitude, longitude) => {
     return await data.json();
 };
 
-export const fetchRelation = (relationUrl) =>
-    fetch(relationUrl, { headers: defaultHeaders });
+export const fetchRelation = async (relationUrl) => {
+    const response = await fetch(relationUrl, { headers: defaultHeaders });
+    return await response.json();
+};
 
-export const fetchStationObservations = (stationUrl) =>
-    fetch(`${stationUrl}/observations/latest?require_qc=true`, {
-        headers: defaultHeaders,
-    });
+export const fetchStationObservations = async (stationUrl) => {
+    const response = await fetch(
+        `${stationUrl}/observations/latest?require_qc=true`,
+        {
+            headers: defaultHeaders,
+        }
+    );
+
+    return await response.json();
+};
