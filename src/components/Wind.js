@@ -19,7 +19,7 @@ export default () => {
 
     return (
         <>
-            {loadState === loadingState.LOADING && <Skeleton />}
+            {loadState === loadingState.LOADING && <Skeleton height={300} width={300} />}
             {loadState === loadingState.LOADED && (
                 <Card>
                     <CardHeader title='Wind Status' />

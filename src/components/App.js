@@ -28,13 +28,23 @@ import Visibility from "./Visibility";
 import Wind from "./Wind";
 
 const Root = styled(Grid)`
-    background-color: #f0f0f0;
+    background: linear-gradient(
+        to bottom,
+        #f0f9ff 0%,
+        #cbebff 37%,
+        #a1dbff 100%
+    );
     min-height: 100vh;
     position: relative;
 `;
 
 const SideBar = styled(Grid)`
     background-color: #fff;
+    margin-right: 20px !important;
+`;
+
+const Title = styled.h1`
+    margin-left: 10px;
 `;
 
 function App() {
@@ -89,49 +99,86 @@ function App() {
                     <Root container>
                         <SideBar
                             item
-                            sm={5}
+                            sm={4}
                             md={3}
+                            lg={2}
                             container
                             spacing={3}
                             direction='column'
-                            // justify='center'
                             alignItems='center'>
+                            <Grid item>
+                                <Title>Weather or Not?</Title>
+                            </Grid>
                             <Grid item>
                                 <LocationSearch onChanged={onLocationChanged} />
                             </Grid>
                             <Grid item>
-                                <CurrentTemperature
+                                {!!state.loadState && <CurrentTemperature
                                     temperature={temperature}
                                     description={weatherDescription}
-                                />
+                                />}
                             </Grid>
                         </SideBar>
                         <Grid
                             item
-                            sm={7}
-                            md={9}
-                            spacing={5}
                             container
+                            sm={8}
+                            md={9}
+                            lg={10}
+                            spacing={5}
                             direction='column'
                             // justify='center'
                             alignItems='center'>
-                            <Grid item>
-                                <HourlyForecast />
-                            </Grid>
-                            <Grid item>
-                                <DailyForecast />
-                            </Grid>
-                            <Grid item container direction='row' spacing={3}>
-                                <Grid item>
-                                    <Humidity />
-                                </Grid>
-                                <Grid item>
-                                    <Visibility />
-                                </Grid>
-                                <Grid item>
-                                    <Wind />
-                                </Grid>
-                            </Grid>
+                            {!!state.loadState && (
+                                <>
+                                    <Grid
+                                        item
+                                        container
+                                        xs
+                                        alignItems='center'
+                                        justify='center'
+                                        spacing={3}>
+                                        <HourlyForecast />
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        container
+                                        xs
+                                        alignItems='center'
+                                        justify='center'
+                                        spacing={3}>
+                                        <DailyForecast />
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        container
+                                        direction='column'
+                                        spacing={3}
+                                        xs
+                                        alignItems='center'
+                                        justify='center'>
+                                        <Grid item xs>
+                                            <h2>Today's Highlights</h2>
+                                        </Grid>
+                                        <Grid
+                                            item
+                                            container
+                                            direction='row'
+                                            spacing={3}
+                                            xs>
+                                            <Grid item xs>
+                                                <Humidity />
+                                            </Grid>
+                                            <Grid item xs>
+                                                <Visibility />
+                                            </Grid>
+                                            <Grid item xs>
+                                                <Wind />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </>
+                            )}
                         </Grid>
                     </Root>
                 </div>

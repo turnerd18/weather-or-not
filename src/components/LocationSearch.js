@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TextField, InputAdornment } from "@material-ui/core";
+import { TextField, InputAdornment, IconButton } from "@material-ui/core";
 import { GpsFixed, Search } from "@material-ui/icons";
 import { LocationStore, loadingState } from "../stores/locationStore";
 
@@ -29,7 +29,6 @@ export default ({ onChanged }) => {
     }, [onChanged]);
 
     const updateGeoLocation = () => {
-        return;
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 ({ coords: { latitude, longitude } }) =>
@@ -53,6 +52,7 @@ export default ({ onChanged }) => {
                     placeholder='Search for location'
                     variant='outlined'
                     fullWidth
+                    autoFocus
                     disabled={
                         locationState.loadState === loadingState.LOADING
                     }
@@ -64,7 +64,13 @@ export default ({ onChanged }) => {
                         ),
                         endAdornment: geoLocationIsAvailable && (
                             <InputAdornment position='end'>
-                                <GpsFixed onClick={updateGeoLocation} />
+                                                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={updateGeoLocation}
+                >
+
+                                <GpsFixed />
+                                </IconButton>
                             </InputAdornment>
                         ),
                     }}
